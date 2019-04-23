@@ -1,6 +1,8 @@
 import os
 import shutil
 import operator
+import tkinter
+from tkinter import filedialog
 from pathlib import Path
 
 #File Union gives the whole description of a file, both the file and
@@ -16,7 +18,8 @@ def main():
     #First, get list of files.
     #To do this, we define the path to the files, as well as 
     #The character we use to split the file name and folder name.
-    dirPath = Path("C:/TestDir/")
+    tkinter.Tk().withdraw() # Close the root window
+    dirPath = filedialog.askopenfilename()
     fileSplit = " -- "
     #List all files that aren't folders
     dirList = [f for f in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, f))]
