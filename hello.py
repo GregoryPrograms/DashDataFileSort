@@ -19,7 +19,7 @@ def main():
     #To do this, we define the path to the files, as well as 
     #The character we use to split the file name and folder name.
     tkinter.Tk().withdraw() # Close the root window
-    dirPath = filedialog.askopenfilename()
+    dirPath = Path(filedialog.askdirectory())
     fileSplit = " -- "
     #List all files that aren't folders
     dirList = [f for f in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, f))]
