@@ -1,8 +1,10 @@
 import os
+import re
 import shutil
 import operator
 import tkinter
 from tkinter import filedialog
+from tkinter import simpledialog
 from pathlib import Path
 
 #File Union gives the whole description of a file, both the file and
@@ -19,8 +21,11 @@ def main():
     #To do this, we define the path to the files, as well as 
     #The character we use to split the file name and folder name.
     tkinter.Tk().withdraw() # Close the root window
-    dirPath = Path(filedialog.askdirectory())
-    fileSplit = " -- "
+    dirPath = Path(filedialog.askdirectory(title = 'Select directory to sort...'))
+    fileSplit = simpledialog.askstring("Split Selector", "Enter a delimiting string")
+    fileSplit.strip()
+    splitWithWhiteSpace = " " + fileSplit + " ", " " + fileSplit, fileSplit + " ", fileSplit
+    delimiters= '|'.join(map(re.escape, splitWithWhiteSpace))
     #List all files that aren't folders
     dirList = [f for f in os.listdir(dirPath) if os.path.isfile(os.path.join(dirPath, f))]
     if(not dirList):
@@ -29,7 +34,7 @@ def main():
     #Now, for each file in the list, split it into folder name and file name.
     fileList = []
     for dirFile in dirList:
-        fileObj = (dirFile.split(fileSplit))
+        fileObj = (re.split(delimiters, dirFile))
         fileList.append(fileUnion(dirFile, fileObj[0],fileObj[1]))
 
     #Next, sort the list by folder name, to make it easier to match files
@@ -43,11 +48,10 @@ def main():
     os.mkdir(fullPath)
 
     currentFile = dirPath / fileList[0].fullName
-    print(currentFile.read_text())
     for currentFile in fileList:
     #If the file belongs in the folder, put it in there.
         if(currentFile.folderName == currentFolder):
-            (dirPath / currentFile.fullName).replace(fullPath / currentFile.fileName)
+            (dirPath / currentFile.fullName).replace(fullPath/ currentFile.fileName)
     #If not, make a new folder, and put it in there.
         else:
             currentFolder = currentFile.folderName
