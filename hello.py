@@ -43,21 +43,17 @@ def main():
     fileList.sort(key=operator.attrgetter('folderName'))
 
     #Now, we make folders for the files
-    currentFolder = fileList[0].folderName
-    fullPath = dirPath / currentFolder
-    os.mkdir(fullPath)
-
-    currentFile = dirPath / fileList[0].fullName
     for currentFile in fileList:
+        currentFolder = currentFile.folderName
+        folderPath = dirPath / currentFolder
+
     #If the file belongs in the folder, put it in there.
-        if(currentFile.folderName == currentFolder):
-            (dirPath / currentFile.fullName).replace(fullPath/ currentFile.fileName)
+        if(folderPath.is_dir()):
+            (dirPath / currentFile.fullName).replace(folderPath/ currentFile.fileName)
     #If not, make a new folder, and put it in there.
         else:
-            currentFolder = currentFile.folderName
-            fullPath = dirPath / currentFolder
-            os.mkdir(fullPath)
-            (dirPath / currentFile.fullName).replace(fullPath / currentFile.fileName)
+            os.mkdir(folderPath)
+            (dirPath / currentFile.fullName).replace(folderPath / currentFile.fileName)
         
 if(__name__ == "__main__"):
     main()
