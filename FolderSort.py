@@ -35,7 +35,10 @@ def main():
     fileList = []
     for dirFile in dirList:
         fileObj = (re.split(delimiters, dirFile))
-        fileList.append(fileUnion(dirFile, fileObj[0],fileObj[1]))
+        if(len(fileObj) == 1):
+            continue
+        else:
+            fileList.append(fileUnion(dirFile, fileObj[0],fileObj[1]))
 
     #Next, sort the list by folder name, to make it easier to match files
     #This will make it so all files with the same folder name are next
